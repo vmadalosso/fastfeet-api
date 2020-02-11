@@ -18,7 +18,7 @@ class RecipientController {
     }
 
     const recipientExists = await Recipient.findOne({
-      where: { name: req.body.name, zipcode: req.body.zipcode },
+      where: { name: req.body.name },
     });
 
     if (recipientExists) {
@@ -48,50 +48,50 @@ class RecipientController {
     });
   }
 
-  // async update(req, res) {
-  //   const schema = Yup.object().shape({
-  //     name: Yup.string(),
-  //     street: Yup.string(),
-  //     number: Yup.number(),
-  //     complement: Yup.string(),
-  //     state: Yup.string(),
-  //     city: Yup.string(),
-  //     zipcode: Yup.string(),
-  //   });
+  async update(req, res) {
+    const schema = Yup.object().shape({
+      name: Yup.string(),
+      street: Yup.string(),
+      number: Yup.number(),
+      complement: Yup.string(),
+      state: Yup.string(),
+      city: Yup.string(),
+      zipcode: Yup.string(),
+    });
 
-  //   if (!(await schema.isValid(req.body))) {
-  //     return res.status(400).json({ error: 'Validation failed' });
-  //   }
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation failed' });
+    }
 
-  //   const { id } = req.params;
+    const { id } = req.params;
 
-  //   const recipient = await Recipient.findByPk(id);
+    const recipient = await Recipient.findByPk(id);
 
-  //   if (!recipient) {
-  //     return res.status(401).json({ error: 'Recipient does not exist' });
-  //   }
+    if (!recipient) {
+      return res.status(401).json({ error: 'Recipient does not exists' });
+    }
 
-  //   const {
-  //     name,
-  //     street,
-  //     number,
-  //     complement,
-  //     state,
-  //     city,
-  //     zipcode,
-  //   } = await Recipient.update(req.body);
+    const {
+      name,
+      street,
+      number,
+      complement,
+      state,
+      city,
+      postcode,
+    } = await recipient.update(req.body);
 
-  //   return res.json({
-  //     id,
-  //     name,
-  //     street,
-  //     number,
-  //     complement,
-  //     state,
-  //     city,
-  //     zipcode,
-  //   });
-  // }
+    return res.json({
+      id,
+      name,
+      street,
+      number,
+      complement,
+      state,
+      city,
+      postcode,
+    });
+  }
 }
 
 export default new RecipientController();
